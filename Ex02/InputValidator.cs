@@ -27,15 +27,21 @@ namespace Ex02
 
         public static int getOpponentType()
         {
-            int choice;
+            int choice = -1;
             bool isValidChoice = false;
-            Console.WriteLine("Press 1 and enter for two players game");
-            Console.WriteLine("Press 2 and enter for playing against the computer");
-            isValidChoice = int.TryParse(Console.ReadLine(), out choice);
-            while (!isValidChoice || choice > 3 || choice < 1)
+       
+            while (!isValidChoice)
             {
-                Console.WriteLine("Enter a valid option: 1 - 2 players , 2 - computer");
+                Console.WriteLine("Press 1 and enter for two players game");
+                Console.WriteLine("Press 2 and enter for playing against the computer");
                 isValidChoice = int.TryParse(Console.ReadLine(), out choice);
+                if (choice > 2 || choice < 1)
+                {
+                    Console.WriteLine("You entered a wrong input.");
+                    continue;
+                }
+
+               isValidChoice = true;   
             }
             return choice;
         }
@@ -90,14 +96,13 @@ namespace Ex02
                     continue;
                 }
 
-
                 isValidBoardSize = true;
             }
 
             return this.m_BoardSize;
         }
 
-        public int [] getValidMove()
+        public int [] getValidMove() 
         {
             int[] boardSize = this.m_BoardSize;
             int[] chosenIndexes = new int[2]; 
@@ -107,12 +112,18 @@ namespace Ex02
             bool isValidMove = false;
 
             string moveIndexes = "";
-            while (!isValidMove) 
+            while (!isValidMove) //add a condition for entering Q
             {
                 Console.WriteLine("Enter a valid move: "); //A3
                 moveIndexes = Console.ReadLine();
                 if (moveIndexes.Length != 2)
                 {
+                    if (moveIndexes.Equals("Q")) //New!
+                    {
+                        chosenIndexes[0] = -1;
+                        chosenIndexes[1] = -1;
+                        return chosenIndexes;
+                    }
                     Console.WriteLine("You entered an invalid move, it has to be 2 letters!");
                     continue;
                 }

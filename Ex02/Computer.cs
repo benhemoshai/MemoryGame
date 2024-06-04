@@ -14,9 +14,6 @@ namespace Ex02
 
         }
 
-        public void ComputerMove()
-        {
-            
-        }
+        
     }
 }

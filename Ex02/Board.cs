@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -7,21 +8,20 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
-    class Board
+    class Board<cellType>
     {
-        private BoardCell [,] m_boardMatrix;
         private int m_boardRows = 0;
         private int m_boardColumns = 0;
         private int m_boardPairs = 0;
-        
+        private BoardCell<cellType>[,] m_boardMatrix;
 
-        public Board(int[] array)
+        public Board(int[] i_BoardDimensions)
         {
-            this.m_boardRows = array[0];
-            this.m_boardColumns = array[1];
+            this.m_boardRows = i_BoardDimensions[0];
+            this.m_boardColumns = i_BoardDimensions[1];
             this.m_boardPairs = (this.m_boardRows * this.m_boardColumns) / 2;
-            this.m_boardMatrix = new BoardCell [this.m_boardRows, this.m_boardColumns];
-            initializeBoard();
+            this.m_boardMatrix = new BoardCell<cellType>[m_boardRows,m_boardColumns];
+            //initializeBoard();
         }
 
         public List<char> generateCards() // makes a list of the cards values to put in the board
@@ -49,15 +49,17 @@ namespace Ex02
                 for (int j = 0; j < this.m_boardColumns; j++)
                 {
                     randomIndex = rand.Next(cardsList.Count());
-                    this.m_boardMatrix[i, j] = new BoardCell(cardsList[randomIndex]); 
+                    /*this.m_boardMatrix[i, j] = new BoardCell<cellType>(cardsList[randomIndex]); */
+                    this.m_boardMatrix[i, j] = null; //temporary for printing
                     cardsList.RemoveAt(randomIndex);
                 }
             }
         }
 
-        public void setBoardCell(int row, int col)
+        public void toggleCellVisibility(int i_RowIndex, int i_ColIndex)
         {
-            m_boardMatrix[row, col].IsChecked = true;
+            bool currentVisibility = m_boardMatrix[i_RowIndex, i_ColIndex].IsVisible;
+            m_boardMatrix[i_RowIndex, i_ColIndex].toggleCellVisibility();
         }
 
         public int[] getSize()
@@ -66,38 +68,58 @@ namespace Ex02
             return size;
         }
 
-        public BoardCell[,] getBoard()
+
+        public BoardCell<cellType>[,] getBoard()
         {
-            {
-                return this.m_boardMatrix;
-            }
-
-
-
-            /*public void printBoard()
-            {
-                StringBuilder columnsTextLine = new StringBuilder("  ");
-                StringBuilder rowsText = new StringBuilder("   ");
-
-                int currentLetter = 65;
-                for (int i = 0; i < 6; i++)
-                {
-                    columnsTextLine.AppendFormat("  {0}", (char)currentLetter++);
-                }
-                columnsTextLine.AppendLine();
-
-                string dividerLine = "=====";
-                for (int i = 0; i < 4; i++)
-                {
-                    rowsText.AppendFormat("=====");
-                }
-                rowsText.AppendFormat("{0}" ,string.CopyTo(1, dividerLine.ToCharArray(), dividerLine.Length, m_boardColumns));
-
-
-                Console.WriteLine(columnsTextLine.ToString());
-
-            }
-            */
+            return this.m_boardMatrix;
         }
+
+        public bool isBoardFullyFlipped() //New - maybe to move to the GameLogic
+        {
+            int flippedCells = 0;
+            for (int i = 0; i < this.m_boardRows; i++)
+            {
+                for (int j = 0; j < this.m_boardColumns; j++)
+                {
+                    if (m_boardMatrix[i, j].IsVisible)
+                    {
+                        flippedCells++;
+                    }
+                }
+            }
+            return (flippedCells == 0);
+        }
+        
+
+        public void printBoard() //move to UI layer?
+        {
+            int initialLetter = 65;
+            string dividerLine = new string('=', 4 * this.m_boardColumns + 1);
+            StringBuilder boardTableOutput = new StringBuilder("  ");
+            
+            // Adding the columns line
+            for (int i = 0; i < this.m_boardColumns; i++)
+            {
+                boardTableOutput.AppendFormat("  {0} ", (char)initialLetter++);
+            }
+
+            boardTableOutput.AppendLine();
+            boardTableOutput.Append("  ").AppendLine(dividerLine);
+
+            // Adding the rows
+            for (int i = 0; i < this.m_boardRows; i++)
+            {
+                boardTableOutput.AppendFormat("{0} |", i + 1);
+                for (int j = 0; j < this.m_boardColumns; j++)
+                {
+                    boardTableOutput.AppendFormat("   |", this.m_boardMatrix[i,j]);
+                }
+                boardTableOutput.AppendLine().Append("  ").AppendLine(dividerLine);
+            }
+
+            Console.WriteLine(boardTableOutput.ToString());
+
+        }
+
     }
 }

@@ -6,27 +6,34 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
-    class BoardCell
+    class BoardCell<cellType>
     {
-        private char m_CellValue;
-        private bool m_IsChecked;
+        private cellType m_CellValue;
+        private bool m_IsVisible;
 
-        public BoardCell(char i_CellValue)
+        public BoardCell(cellType i_CellValue)
         {
             this.m_CellValue = i_CellValue;
-            this.m_IsChecked = false;
+            this.m_IsVisible = false;
         }
 
-        public char CellValue{
-            get { return m_CellValue; }
+        public cellType CellValue
+        {
+            get { return CellValue; }
             set { m_CellValue = value; }
         }
 
-        public bool IsChecked
+        public bool IsVisible
         {
-            get { return m_IsChecked; }
-            set { m_IsChecked = value; }
+            get { return m_IsVisible; }
         }
+
+        public void toggleCellVisibility()
+        {
+            m_IsVisible = !m_IsVisible;
+        }
+
+
 
     }
 
