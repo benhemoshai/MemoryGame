@@ -20,14 +20,14 @@ namespace Ex02
         public static void startGame()
         {
             initializeGame();
-            mainLoop();
+            gameRoutine();
         }
 
         private static void initializeGame()
         {
 
             string userName = InputValidator.getValidUserName();
-            m_User1 = new User(userName);    
+            m_User1 = new User(userName);
             int gameType = InputValidator.getOpponentType();
 
             if (gameType == 1)
@@ -45,21 +45,22 @@ namespace Ex02
             m_Board.initializeBoard();
         }
 
-        private static void mainLoop()
+        private static void gameRoutine()
         {
             while (!isGameOver())
             {
+                cleanAndPrintBoard();
                 if (m_turn == 0)
                 {
                     userPlay(m_User1);
-                    //ConsoleUtils.Screen.Clear(); ---- move to the inputvalidator? ui?
+                  
                     if (m_isCorrectChoice || m_userPressedQ) // we want to seperate in order to send a message when he was correct
                     {
                         continue;
                     }
                     m_turn = 1;
                 }
-                if (m_turn == 1)
+                else if (m_turn == 1)
                 {
                     userPlay(m_User2);
                     if (m_isCorrectChoice || m_userPressedQ)
@@ -68,19 +69,25 @@ namespace Ex02
                     }
                     m_turn = 0;
                 }
-                
+
             }
 
         }
 
+        private static void cleanAndPrintBoard()
+        {
+            Ex02.ConsoleUtils.Screen.Clear();
+            m_Board.printBoard();
+        }
+
 
         //New!
-        private static void userPlay(User i_user)
+        private static void userPlay(User i_User)
         {
             int[] firstTurnIndexes = new int[2];
-            int[] secondTurnIndexes = new int[2]; 
+            int[] secondTurnIndexes = new int[2];
 
-            firstTurnIndexes = InputValidator.getValidMove();
+            firstTurnIndexes = InputValidator.getValidMove(i_User.UserName);
 
             if (firstTurnIndexes[0] == -1 && firstTurnIndexes[1] == -1)
             {
@@ -88,46 +95,50 @@ namespace Ex02
                 return;
             }
 
+            userMove(i_User.UserName, firstTurnIndexes[0], firstTurnIndexes[1]);
 
-            userMove(firstTurnIndexes[0], firstTurnIndexes[1]);
-            
-            
-            secondTurnIndexes = InputValidator.getValidMove();
+            secondTurnIndexes = InputValidator.getValidMove(i_User.UserName);
 
             if (secondTurnIndexes[0] == -1 && secondTurnIndexes[1] == -1) // code duplication
             {
                 m_userPressedQ = true;
                 return;
             }
-            userMove(secondTurnIndexes[0], secondTurnIndexes[1]);
-             
+
+            userMove(i_User.UserName, secondTurnIndexes[ 0], secondTurnIndexes[1]);
+
             //checks if the values inside of the cells are the same - if the user is correct
-            if (m_Board.getBoard()[firstTurnIndexes[0], firstTurnIndexes[1]].CellValue == m_Board.getBoard()[secondTurnIndexes[0], secondTurnIndexes[1]].CellValue)
+            if (m_Board.getBoard()[firstTurnIndexes[0], firstTurnIndexes[1]].CellValue.Equals(m_Board.getBoard()[secondTurnIndexes[0], secondTurnIndexes[1]].CellValue))
             {
-                i_user.UserScore++;
-                m_isCorrectChoice = true; 
-                //keep the cards open
+                Console.WriteLine("Match!");
+                i_User.UserScore++;
+                m_isCorrectChoice = true;
             }
             //if the user is wrong
-            else 
+            else
             {
+                Console.WriteLine("Miss!");
                 m_isCorrectChoice = false;
-                //flip the cards
                 m_Board.toggleCellVisibility(firstTurnIndexes[0], firstTurnIndexes[1]);
                 m_Board.toggleCellVisibility(secondTurnIndexes[0], secondTurnIndexes[1]);
+                
             }
+
+            //System.Threading.Thread.Sleep(2000);
+            cleanAndPrintBoard();
         }
 
-        private static void userMove(int i, int j)
+        private static void userMove(string i_UserName, int i_RowIndex, int i_ColumnIndex)
         {
-            if (m_Board.getBoard()[i, j].IsVisible) // if the cell is already flipped
+            if (m_Board.getBoard()[i_RowIndex, i_ColumnIndex].IsVisible) // if the cell is already flipped
             {
-                //add a message 
-                InputValidator.getValidMove();
+                Console.WriteLine("Invalid cell, choose another one.");
+                InputValidator.getValidMove(i_UserName);
             }
             else
             {
-                m_Board.toggleCellVisibility(i, j);
+                m_Board.toggleCellVisibility(i_RowIndex, i_ColumnIndex);
+                cleanAndPrintBoard();
             }
         }
 
@@ -140,12 +151,11 @@ namespace Ex02
 
         }
 
-        //New!
         private static bool isGameOver()
         {
             return m_Board.isBoardFullyFlipped() || m_userPressedQ;
         }
-     
+
 
     }
 }

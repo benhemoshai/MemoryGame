@@ -95,19 +95,18 @@ namespace Ex02
             return boardDimensions;
         }
 
-        public static int[] getValidMove()
+        public static int[] getValidMove(string i_UserName)
         {
             int[] boardSize = m_BoardSize;
             int[] chosenIndexes = new int[2];
             int rows = boardSize[0];
             int cols = boardSize[1] - 1;
-
             bool isValidMove = false;
 
             string moveIndexes = "";
             while (!isValidMove) //add a condition for entering Q
             {
-                Console.WriteLine("Enter a valid move: "); //A3
+                Console.WriteLine(string.Format("({0}) Enter a valid move: ", i_UserName)); //A3
                 moveIndexes = Console.ReadLine();
                 if (moveIndexes.Length != 2)
                 {
@@ -115,30 +114,33 @@ namespace Ex02
                     {
                         chosenIndexes[0] = -1;
                         chosenIndexes[1] = -1;
-                        return chosenIndexes;
+                        break;
                     }
+
                     Console.WriteLine("You entered an invalid move, it has to be 2 letters!");
                     continue;
                 }
 
                 else if (moveIndexes[0] - 65 < 0 || moveIndexes[0] - 65 > cols)
                 { // decrease by 65 to parse it to int 
-                    Console.WriteLine("You entered an invalid column index");
+                    Console.WriteLine("Invalid column index!");
                     continue;
                 }
                 else if (moveIndexes[1] - 48 < 1 || moveIndexes[1] - 48 > rows) // decrease by 48 to parse it to int. changed the condition < 1
                 {
-                    Console.WriteLine("You entered an invalid row index");
+                    Console.WriteLine("Invalid row index!");
                     continue;
                 }
-                isValidMove = true;
+                else
+                {
+                    isValidMove = true;
+                    chosenIndexes[0] = int.Parse(moveIndexes.Substring(1)) - 1; // or moveIndexes[1] - 48 - 1;
+                    chosenIndexes[1] = moveIndexes[0] - 65;
+                    continue;
+                }
             }
 
-            chosenIndexes[0] = int.Parse(moveIndexes.Substring(1)) - 1; // or moveIndexes[1] - 48 - 1;
-            chosenIndexes[1] = moveIndexes[0] - 65;
-
             return chosenIndexes;
-
         }
     }
 }

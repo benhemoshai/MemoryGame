@@ -10,8 +10,8 @@ namespace Ex02
     { 
         public void startGame()
         {
-            GameLogic game = new GameLogic();
-            game.mainLoop();
+            
+            //startGame();
         }
 
     }

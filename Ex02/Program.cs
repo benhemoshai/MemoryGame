@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
-     class Program
+    class Program
     {
         public static void Main()
-        { 
-          
-            /*int[] a = { 6, 6 };
-            Board<char> board = new Board<char>(a);
-            board.printBoard();*/
+        {
+            //GameStarter.startGame("memory_game");
+            GameLogic.startGame();
 
-            MemoryGameUI memoryGameUI = new MemoryGameUI();
-            memoryGameUI.startGame();
+            /*            int[] a = { 6, 6 };
+                        Board<char> board = new Board<char>(a);
+                        board.printBoard();*/
             Console.ReadLine();
 
         }

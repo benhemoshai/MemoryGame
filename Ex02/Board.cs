@@ -20,7 +20,7 @@ namespace Ex02
             this.m_boardRows = i_BoardDimensions[0];
             this.m_boardColumns = i_BoardDimensions[1];
             this.m_boardPairs = (this.m_boardRows * this.m_boardColumns) / 2;
-            this.m_boardMatrix = new BoardCell[m_boardRows,m_boardColumns];
+            this.m_boardMatrix = new BoardCell[m_boardRows, m_boardColumns];
             //initializeBoard();
         }
 
@@ -41,16 +41,16 @@ namespace Ex02
         {
 
             List<char> cardsList = generateCards();
-            
+
             Random rand = new Random();
-            int randomIndex = -1; 
+            int randomIndex = -1;
             for (int i = 0; i < this.m_boardRows; i++)
             {
                 for (int j = 0; j < this.m_boardColumns; j++)
                 {
                     randomIndex = rand.Next(cardsList.Count());
-                    this.m_boardMatrix[i, j] = new BoardCell(cardsList[randomIndex]); 
-                   // this.m_boardMatrix[i, j] = null; //temporary for printing
+                    this.m_boardMatrix[i, j] = new BoardCell(cardsList[randomIndex]);
+                    // this.m_boardMatrix[i, j] = null; //temporary for printing
                     cardsList.RemoveAt(randomIndex);
                 }
             }
@@ -65,7 +65,7 @@ namespace Ex02
 
         public int[] getSize()
         {
-            int[] size = {this.m_boardRows, this.m_boardColumns};
+            int[] size = { this.m_boardRows, this.m_boardColumns };
             return size;
         }
 
@@ -101,21 +101,21 @@ namespace Ex02
                 {
                     if (!this.m_boardMatrix[i, j].IsVisible)
                     {
-                        int[] a = {i, j};
+                        int[] a = { i, j };
                         freeIndexes.Add(a);
                     }
                 }
             }
             return freeIndexes;
         }
-        
+
 
         public void printBoard() //move to UI layer?
         {
             int initialLetter = 65;
             string dividerLine = new string('=', 4 * this.m_boardColumns + 1);
             StringBuilder boardTableOutput = new StringBuilder("  ");
-            
+
             // Adding the columns line
             for (int i = 0; i < this.m_boardColumns; i++)
             {
@@ -131,7 +131,14 @@ namespace Ex02
                 boardTableOutput.AppendFormat("{0} |", i + 1);
                 for (int j = 0; j < this.m_boardColumns; j++)
                 {
-                    boardTableOutput.AppendFormat("   |", this.m_boardMatrix[i,j]);
+                    if (this.m_boardMatrix[i, j].IsVisible)
+                    {
+                        boardTableOutput.AppendFormat(" {0} |", this.m_boardMatrix[i, j].CellValue);
+                    }
+                    else
+                    {
+                        boardTableOutput.Append("   |");
+                    }
                 }
                 boardTableOutput.AppendLine().Append("  ").AppendLine(dividerLine);
             }
