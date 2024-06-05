@@ -9,47 +9,51 @@ namespace Ex02
 {
     class GameLogic
     {
-        private Board<char> m_Board;
-        private User m_User1;
-        private User m_User2;
-        private Computer m_Computer;
-        private MemoryGameUI m_GameUI;
-        private InputValidator m_InputValidator;
-        private int m_turn = 0;
-        private bool m_isCorrectChoice = false;
-        private bool m_userPressedQ = false;
+        private static Board m_Board;
+        private static User m_User1;
+        private static User m_User2;
+        private static Computer m_Computer;
+        private static int m_turn = 0;
+        private static bool m_isCorrectChoice = false;
+        private static bool m_userPressedQ = false;
 
-
-        public void initializeGame()
+        public static void startGame()
         {
+            initializeGame();
+            mainLoop();
+        }
+
+        private static void initializeGame()
+        {
+
             string userName = InputValidator.getValidUserName();
-            this.m_User1 = new User(userName);    
+            m_User1 = new User(userName);    
             int gameType = InputValidator.getOpponentType();
 
             if (gameType == 1)
             {
                 userName = InputValidator.getValidUserName();
-                this.m_User2 = new User(userName);
+                m_User2 = new User(userName);
             }
             else
             {
-                this.m_Computer = new Computer();
+                m_Computer = new Computer();
             }
 
-            int[] boardDimensions = m_InputValidator.getValidBoardSize();
-            this.m_Board = new Board<char>(boardDimensions);
+            int[] boardDimensions = InputValidator.getValidBoardSize();
+            m_Board = new Board(boardDimensions);
+            m_Board.initializeBoard();
         }
 
-        public void mainLoop()
+        private static void mainLoop()
         {
-            initializeGame();
             while (!isGameOver())
             {
                 if (m_turn == 0)
                 {
                     userPlay(m_User1);
                     //ConsoleUtils.Screen.Clear(); ---- move to the inputvalidator? ui?
-                    if (m_isCorrectChoice || m_userPressedQ)
+                    if (m_isCorrectChoice || m_userPressedQ) // we want to seperate in order to send a message when he was correct
                     {
                         continue;
                     }
@@ -71,12 +75,12 @@ namespace Ex02
 
 
         //New!
-        public void userPlay(User i_user)
+        private static void userPlay(User i_user)
         {
             int[] firstTurnIndexes = new int[2];
             int[] secondTurnIndexes = new int[2]; 
 
-            firstTurnIndexes = m_InputValidator.getValidMove();
+            firstTurnIndexes = InputValidator.getValidMove();
 
             if (firstTurnIndexes[0] == -1 && firstTurnIndexes[1] == -1)
             {
@@ -88,7 +92,7 @@ namespace Ex02
             userMove(firstTurnIndexes[0], firstTurnIndexes[1]);
             
             
-            secondTurnIndexes = m_InputValidator.getValidMove();
+            secondTurnIndexes = InputValidator.getValidMove();
 
             if (secondTurnIndexes[0] == -1 && secondTurnIndexes[1] == -1) // code duplication
             {
@@ -114,11 +118,12 @@ namespace Ex02
             }
         }
 
-        public void userMove(int i, int j)
+        private static void userMove(int i, int j)
         {
             if (m_Board.getBoard()[i, j].IsVisible) // if the cell is already flipped
             {
-                m_InputValidator.getValidMove();
+                //add a message 
+                InputValidator.getValidMove();
             }
             else
             {
@@ -126,13 +131,17 @@ namespace Ex02
             }
         }
 
-        public void computerMove()
+        private static void computerMove()
         {
+            List<int[]> freeIndexes = m_Board.getFreeIndexes();
+            Random rnd = new Random();
+            int randomIndex = rnd.Next(freeIndexes.Count());
+
 
         }
 
         //New!
-        public bool isGameOver()
+        private static bool isGameOver()
         {
             return m_Board.isBoardFullyFlipped() || m_userPressedQ;
         }

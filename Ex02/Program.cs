@@ -11,9 +11,12 @@ namespace Ex02
         public static void Main()
         { 
           
-            int[] a = { 6, 6 };
+            /*int[] a = { 6, 6 };
             Board<char> board = new Board<char>(a);
-            board.printBoard();
+            board.printBoard();*/
+
+            MemoryGameUI memoryGameUI = new MemoryGameUI();
+            memoryGameUI.startGame();
             Console.ReadLine();
 
         }

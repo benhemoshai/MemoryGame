@@ -10,13 +10,7 @@ namespace Ex02
 {
     class InputValidator
     {
-        private int[] m_BoardSize;
-        
-        public InputValidator()
-        {
-            this.m_BoardSize = new int[2];
-            this.m_BoardSize[0] = 6; this.m_BoardSize[1] = 6;
-        }
+        private static int[] m_BoardSize;
 
         public static string getValidUserName()
         {
@@ -29,7 +23,7 @@ namespace Ex02
         {
             int choice = -1;
             bool isValidChoice = false;
-       
+
             while (!isValidChoice)
             {
                 Console.WriteLine("Press 1 and enter for two players game");
@@ -41,73 +35,72 @@ namespace Ex02
                     continue;
                 }
 
-               isValidChoice = true;   
+                isValidChoice = true;
             }
             return choice;
         }
-        
+
         /*
          * To check if theres a better way to implement this
          * 
          */
-        public int [] getValidBoardSize()
+        public static int[] getValidBoardSize()
         {
-            int[] board = new int[2];
-            int numberOfRows = 0;
-            int numberOfCols = 0;
+            int[] boardDimensions = new int[2];
             bool isValidNumOfRows = false;
             bool isValidNumOfCols = false;
             bool isValidBoardSize = false;
 
             while (!isValidBoardSize)
             {
+                string userAnswer;
                 Console.WriteLine("Enter a valid number of rows (between 4 to 6): ");
-                isValidNumOfRows = int.TryParse(Console.ReadLine(), out this.m_BoardSize[0]);
-                numberOfRows = this.m_BoardSize[0];
-                
+                userAnswer = Console.ReadLine();
+                isValidNumOfRows = int.TryParse(userAnswer, out boardDimensions[0]);
+
                 if (!isValidNumOfRows)
                 {
-                    Console.WriteLine("You didn't enter a number!");
+                    Console.WriteLine("You should enter a number!");
                     continue;
                 }
-                else if (numberOfRows < 4 || numberOfRows > 6)
+                else if (boardDimensions[0] < 4 || boardDimensions[0] > 6)
                 {
-                    Console.WriteLine(String.Format("The rows number {0} is not between 4 to 6!", this.m_BoardSize[0]));
+                    Console.WriteLine(String.Format("{0} is not in range!", boardDimensions[0]));
                     continue;
                 }
 
-                Console.WriteLine("Enter a valid number of cols (between 4 to 6): ");
-                isValidNumOfCols = int.TryParse(Console.ReadLine(), out this.m_BoardSize[1]);
-                numberOfCols = this.m_BoardSize[1];
+                Console.WriteLine("Enter a valid number of columns (between 4 to 6): ");
+                isValidNumOfCols = int.TryParse(Console.ReadLine(), out boardDimensions[1]);
                 if (!isValidNumOfCols)
                 {
-                    Console.WriteLine("You didn't enter a number!");
+                    Console.WriteLine("You should enter a number!");
                     continue;
                 }
-                else if (numberOfCols < 4 || numberOfCols > 6)
+                else if (boardDimensions[1] < 4 || boardDimensions[1] > 6)
                 {
-                    Console.WriteLine(String.Format("The columns number {0} is not between 4 to 6!", this.m_BoardSize[1]));
+                    Console.WriteLine(String.Format("{0} is not in range!", m_BoardSize[1]));
                     continue;
                 }
 
-                if (numberOfRows * numberOfCols % 2 != 0)
+                if (boardDimensions[0] * boardDimensions[1] % 2 != 0)
                 {
                     Console.WriteLine("The number of cells in the board has to be even!");
                     continue;
                 }
 
+                m_BoardSize = boardDimensions;
                 isValidBoardSize = true;
             }
 
-            return this.m_BoardSize;
+            return boardDimensions;
         }
 
-        public int [] getValidMove() 
+        public static int[] getValidMove()
         {
-            int[] boardSize = this.m_BoardSize;
-            int[] chosenIndexes = new int[2]; 
+            int[] boardSize = m_BoardSize;
+            int[] chosenIndexes = new int[2];
             int rows = boardSize[0];
-            int cols = boardSize[1]-1;
+            int cols = boardSize[1] - 1;
 
             bool isValidMove = false;
 
@@ -127,8 +120,9 @@ namespace Ex02
                     Console.WriteLine("You entered an invalid move, it has to be 2 letters!");
                     continue;
                 }
-                
-                else if (moveIndexes[0] - 65 < 0 || moveIndexes[0] - 65 > cols){ // decrease by 65 to parse it to int 
+
+                else if (moveIndexes[0] - 65 < 0 || moveIndexes[0] - 65 > cols)
+                { // decrease by 65 to parse it to int 
                     Console.WriteLine("You entered an invalid column index");
                     continue;
                 }

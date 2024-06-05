@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
-    class BoardCell<cellType>
+    class BoardCell
     {
-        private cellType m_CellValue;
+        private char m_CellValue;
         private bool m_IsVisible;
 
-        public BoardCell(cellType i_CellValue)
+        public BoardCell(char i_CellValue)
         {
             this.m_CellValue = i_CellValue;
             this.m_IsVisible = false;
         }
 
-        public cellType CellValue
+        public char CellValue
         {
-            get { return CellValue; }
+            get { return m_CellValue; }
             set { m_CellValue = value; }
         }
 

@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
-    class Board<cellType>
+    class Board//<cellType>
     {
         private int m_boardRows = 0;
         private int m_boardColumns = 0;
         private int m_boardPairs = 0;
-        private BoardCell<cellType>[,] m_boardMatrix;
+        private BoardCell[,] m_boardMatrix;
 
         public Board(int[] i_BoardDimensions)
         {
             this.m_boardRows = i_BoardDimensions[0];
             this.m_boardColumns = i_BoardDimensions[1];
             this.m_boardPairs = (this.m_boardRows * this.m_boardColumns) / 2;
-            this.m_boardMatrix = new BoardCell<cellType>[m_boardRows,m_boardColumns];
+            this.m_boardMatrix = new BoardCell[m_boardRows,m_boardColumns];
             //initializeBoard();
         }
 
@@ -49,8 +49,8 @@ namespace Ex02
                 for (int j = 0; j < this.m_boardColumns; j++)
                 {
                     randomIndex = rand.Next(cardsList.Count());
-                    /*this.m_boardMatrix[i, j] = new BoardCell<cellType>(cardsList[randomIndex]); */
-                    this.m_boardMatrix[i, j] = null; //temporary for printing
+                    this.m_boardMatrix[i, j] = new BoardCell(cardsList[randomIndex]); 
+                   // this.m_boardMatrix[i, j] = null; //temporary for printing
                     cardsList.RemoveAt(randomIndex);
                 }
             }
@@ -58,6 +58,7 @@ namespace Ex02
 
         public void toggleCellVisibility(int i_RowIndex, int i_ColIndex)
         {
+            //first line
             bool currentVisibility = m_boardMatrix[i_RowIndex, i_ColIndex].IsVisible;
             m_boardMatrix[i_RowIndex, i_ColIndex].toggleCellVisibility();
         }
@@ -69,7 +70,7 @@ namespace Ex02
         }
 
 
-        public BoardCell<cellType>[,] getBoard()
+        public BoardCell[,] getBoard()
         {
             return this.m_boardMatrix;
         }
@@ -81,13 +82,31 @@ namespace Ex02
             {
                 for (int j = 0; j < this.m_boardColumns; j++)
                 {
-                    if (m_boardMatrix[i, j].IsVisible)
+                    if (this.m_boardMatrix[i, j].IsVisible)
                     {
                         flippedCells++;
                     }
                 }
             }
-            return (flippedCells == 0);
+            return (flippedCells == m_boardColumns * m_boardRows);
+        }
+
+        public List<int[]> getFreeIndexes()
+        {
+            List<int[]> freeIndexes = new List<int[]>();
+
+            for (int i = 0; i < this.m_boardRows; i++)
+            {
+                for (int j = 0; j < this.m_boardColumns; j++)
+                {
+                    if (!this.m_boardMatrix[i, j].IsVisible)
+                    {
+                        int[] a = {i, j};
+                        freeIndexes.Add(a);
+                    }
+                }
+            }
+            return freeIndexes;
         }
         
 
