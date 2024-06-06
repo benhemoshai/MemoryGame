@@ -35,11 +35,9 @@ namespace Ex02
             }
             return cardsList;
         }
-        // {Z,Z,Y,Y,X,X} 
 
         public void initializeBoard()
         {
-
             List<char> cardsList = generateCards();
 
             Random rand = new Random();
@@ -50,7 +48,6 @@ namespace Ex02
                 {
                     randomIndex = rand.Next(cardsList.Count());
                     this.m_boardMatrix[i, j] = new BoardCell(cardsList[randomIndex]);
-                    // this.m_boardMatrix[i, j] = null; //temporary for printing
                     cardsList.RemoveAt(randomIndex);
                 }
             }
@@ -58,7 +55,6 @@ namespace Ex02
 
         public void toggleCellVisibility(int i_RowIndex, int i_ColIndex)
         {
-            //first line
             bool currentVisibility = m_boardMatrix[i_RowIndex, i_ColIndex].IsVisible;
             m_boardMatrix[i_RowIndex, i_ColIndex].toggleCellVisibility();
         }
@@ -70,7 +66,7 @@ namespace Ex02
         }
 
 
-        public BoardCell[,] getBoard()
+        public BoardCell[,] getBoardCells()
         {
             return this.m_boardMatrix;
         }
@@ -107,44 +103,6 @@ namespace Ex02
                 }
             }
             return freeIndexes;
-        }
-
-
-        public void printBoard() //move to UI layer?
-        {
-            int initialLetter = 65;
-            string dividerLine = new string('=', 4 * this.m_boardColumns + 1);
-            StringBuilder boardTableOutput = new StringBuilder("  ");
-
-            // Adding the columns line
-            for (int i = 0; i < this.m_boardColumns; i++)
-            {
-                boardTableOutput.AppendFormat("  {0} ", (char)initialLetter++);
-            }
-
-            boardTableOutput.AppendLine();
-            boardTableOutput.Append("  ").AppendLine(dividerLine);
-
-            // Adding the rows
-            for (int i = 0; i < this.m_boardRows; i++)
-            {
-                boardTableOutput.AppendFormat("{0} |", i + 1);
-                for (int j = 0; j < this.m_boardColumns; j++)
-                {
-                    if (this.m_boardMatrix[i, j].IsVisible)
-                    {
-                        boardTableOutput.AppendFormat(" {0} |", this.m_boardMatrix[i, j].CellValue);
-                    }
-                    else
-                    {
-                        boardTableOutput.Append("   |");
-                    }
-                }
-                boardTableOutput.AppendLine().Append("  ").AppendLine(dividerLine);
-            }
-
-            Console.WriteLine(boardTableOutput.ToString());
-
         }
 
         public void printScoreBoard(User m_User1, User m_User2)

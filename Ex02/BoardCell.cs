@@ -8,16 +8,16 @@ namespace Ex02
 {
     class BoardCell
     {
-        private char m_CellValue;
+        private object m_CellValue;
         private bool m_IsVisible;
 
-        public BoardCell(char i_CellValue)
+        public BoardCell(object i_CellValue)
         {
             this.m_CellValue = i_CellValue;
             this.m_IsVisible = false;
         }
 
-        public char CellValue
+        public object CellValue
         {
             get { return m_CellValue; }
             set { m_CellValue = value; }

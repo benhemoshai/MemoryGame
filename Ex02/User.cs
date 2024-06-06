@@ -28,6 +28,11 @@ namespace Ex02
         { get { return m_UserScore; }
           set { m_UserScore = value; }
         }
+
+        public bool IsAI
+        { 
+         get { return m_IsAI; } 
+        }
         
     }
 }

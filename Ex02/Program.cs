@@ -11,7 +11,7 @@ namespace Ex02
         public static void Main()
         {
             //GameStarter.startGame("memory_game");
-            GameLogic.startGame();
+            MemoryGameUI.startMemoryGame();
 
             /*            int[] a = { 6, 6 };
                         Board<char> board = new Board<char>(a);

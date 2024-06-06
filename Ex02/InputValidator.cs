@@ -33,6 +33,7 @@ namespace Ex02
                 if (choice > 2 || choice < 1)
                 {
                     Console.WriteLine("You entered a wrong input.");
+                    isValidChoice = false;
                     continue;
                 }
 
@@ -136,7 +137,7 @@ namespace Ex02
                 chosenIndexes[0] = int.Parse(moveIndexes.Substring(1)) - 1; // or moveIndexes[1] - 48 - 1;
                 chosenIndexes[1] = moveIndexes[0] - 65;
                 //if (i_TakenIndexes.Any(indexes => indexes.SequenceEqual(chosenIndexes)))
-                if (i_CurrentBoard.getBoard()[chosenIndexes[0], chosenIndexes[1]].IsVisible)
+                if (i_CurrentBoard.getBoardCells()[chosenIndexes[0], chosenIndexes[1]].IsVisible)
                 {
                     Console.WriteLine("This is cell is already taken!");
                     continue;
@@ -150,6 +151,23 @@ namespace Ex02
             }
 
             return chosenIndexes;
+        }
+
+        public static string getUserChoiceWhenGameFinishes()
+        {
+            Console.WriteLine("Do you want to play again? (press Y or N)");
+            string userChoice = "";
+            bool isValidChoice = false;
+            while(!isValidChoice)
+            {
+                userChoice = Console.ReadLine();
+                if (!userChoice.Equals("Y") && !userChoice.Equals("N"))
+                {
+                    Console.WriteLine("Enter only Y or N to continue!");
+                }
+                isValidChoice = true;
+            }
+            return userChoice;
         }
     }
 }
