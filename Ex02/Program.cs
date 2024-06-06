@@ -12,12 +12,6 @@ namespace Ex02
         {
             //GameStarter.startGame("memory_game");
             MemoryGameUI.startMemoryGame();
-
-            /*            int[] a = { 6, 6 };
-                        Board<char> board = new Board<char>(a);
-                        board.printBoard();*/
-            Console.ReadLine();
-
         }
     }
 }

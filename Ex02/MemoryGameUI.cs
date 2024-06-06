@@ -22,8 +22,8 @@ namespace Ex02
                 }
                 else
                 {
-                    finishGame();
-                    break;//not exiting
+                    finishGame();   
+                    break;
                 }
             }
         }
