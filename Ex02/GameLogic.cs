@@ -16,6 +16,7 @@ namespace Ex02
         private static int m_turn = 0;
         private static bool m_isCorrectChoice = false;
         private static bool m_userPressedQ = false;
+        private static List<int[]> m_TakenIndexes = new List<int[]>();
 
         public static void startGame()
         {
@@ -87,7 +88,7 @@ namespace Ex02
             int[] firstTurnIndexes = new int[2];
             int[] secondTurnIndexes = new int[2];
 
-            firstTurnIndexes = InputValidator.getValidMove(i_User.UserName);
+            firstTurnIndexes = InputValidator.getValidMove(i_User.UserName, m_TakenIndexes);
 
             if (firstTurnIndexes[0] == -1 && firstTurnIndexes[1] == -1)
             {
@@ -95,9 +96,9 @@ namespace Ex02
                 return;
             }
 
-            userMove(i_User.UserName, firstTurnIndexes[0], firstTurnIndexes[1]);
+            userMove(firstTurnIndexes[0], firstTurnIndexes[1]);
 
-            secondTurnIndexes = InputValidator.getValidMove(i_User.UserName);
+            secondTurnIndexes = InputValidator.getValidMove(i_User.UserName, m_TakenIndexes);
 
             if (secondTurnIndexes[0] == -1 && secondTurnIndexes[1] == -1) // code duplication
             {
@@ -105,12 +106,14 @@ namespace Ex02
                 return;
             }
 
-            userMove(i_User.UserName, secondTurnIndexes[ 0], secondTurnIndexes[1]);
+            userMove(secondTurnIndexes[0], secondTurnIndexes[1]);
 
             //checks if the values inside of the cells are the same - if the user is correct
             if (m_Board.getBoard()[firstTurnIndexes[0], firstTurnIndexes[1]].CellValue.Equals(m_Board.getBoard()[secondTurnIndexes[0], secondTurnIndexes[1]].CellValue))
             {
                 Console.WriteLine("Match!");
+                m_TakenIndexes.Add(firstTurnIndexes);
+                m_TakenIndexes.Add(secondTurnIndexes);
                 i_User.UserScore++;
                 m_isCorrectChoice = true;
             }
@@ -124,22 +127,23 @@ namespace Ex02
                 
             }
 
-            //System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(2000);
             cleanAndPrintBoard();
         }
 
-        private static void userMove(string i_UserName, int i_RowIndex, int i_ColumnIndex)
-        {
-            if (m_Board.getBoard()[i_RowIndex, i_ColumnIndex].IsVisible) // if the cell is already flipped
+        /*
+         * 
+         *  if (m_Board.getBoard()[i_RowIndex, i_ColumnIndex].IsVisible) // if the cell is already flipped
             {
                 Console.WriteLine("Invalid cell, choose another one.");
                 InputValidator.getValidMove(i_UserName);
             }
-            else
-            {
+        */
+      
+        private static void userMove(int i_RowIndex, int i_ColumnIndex)// the user plays only when it possible
+        {
                 m_Board.toggleCellVisibility(i_RowIndex, i_ColumnIndex);
                 cleanAndPrintBoard();
-            }
         }
 
         private static void computerMove()

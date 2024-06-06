@@ -11,6 +11,7 @@ namespace Ex02
     class InputValidator
     {
         private static int[] m_BoardSize;
+        private static List<int[]> m_TakenIndexes = new List<int[]>();
 
         public static string getValidUserName()
         {
@@ -95,7 +96,7 @@ namespace Ex02
             return boardDimensions;
         }
 
-        public static int[] getValidMove(string i_UserName)
+        public static int[] getValidMove(string i_UserName, List<int[]> i_TakenIndexes)//maybe to receive a list of free indexes as parameter
         {
             int[] boardSize = m_BoardSize;
             int[] chosenIndexes = new int[2];
@@ -131,11 +132,17 @@ namespace Ex02
                     Console.WriteLine("Invalid row index!");
                     continue;
                 }
-                else
+
+                 chosenIndexes[0] = int.Parse(moveIndexes.Substring(1)) - 1; // or moveIndexes[1] - 48 - 1;
+                 chosenIndexes[1] = moveIndexes[0] - 65;
+                if (i_TakenIndexes.Any(indexes => indexes.SequenceEqual(chosenIndexes)))
                 {
+                    Console.WriteLine("This is cell is already taken!");
+                        continue;
+                    }
+                 else { 
+                   // m_TakenIndexes.Add(chosenIndexes);
                     isValidMove = true;
-                    chosenIndexes[0] = int.Parse(moveIndexes.Substring(1)) - 1; // or moveIndexes[1] - 48 - 1;
-                    chosenIndexes[1] = moveIndexes[0] - 65;
                     continue;
                 }
             }
