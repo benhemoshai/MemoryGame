@@ -147,5 +147,11 @@ namespace Ex02
 
         }
 
+        public void printScoreBoard(User m_User1, User m_User2)
+        {
+            string scoreBoardOutput = string.Format("Scoreboard: {0} - {1} points | {2} - {3} point", m_User1.UserName, m_User1.UserScore, m_User2.UserName, m_User2.UserScore);
+            
+            Console.WriteLine(scoreBoardOutput);
+        }
     }
 }

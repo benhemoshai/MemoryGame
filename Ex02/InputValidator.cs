@@ -96,7 +96,7 @@ namespace Ex02
             return boardDimensions;
         }
 
-        public static int[] getValidMove(string i_UserName, List<int[]> i_TakenIndexes)//maybe to receive a list of free indexes as parameter
+        public static int[] getValidMove(string i_UserName, Board i_CurrentBoard)//maybe to receive a list of free indexes as parameter
         {
             int[] boardSize = m_BoardSize;
             int[] chosenIndexes = new int[2];
@@ -133,15 +133,17 @@ namespace Ex02
                     continue;
                 }
 
-                 chosenIndexes[0] = int.Parse(moveIndexes.Substring(1)) - 1; // or moveIndexes[1] - 48 - 1;
-                 chosenIndexes[1] = moveIndexes[0] - 65;
-                if (i_TakenIndexes.Any(indexes => indexes.SequenceEqual(chosenIndexes)))
+                chosenIndexes[0] = int.Parse(moveIndexes.Substring(1)) - 1; // or moveIndexes[1] - 48 - 1;
+                chosenIndexes[1] = moveIndexes[0] - 65;
+                //if (i_TakenIndexes.Any(indexes => indexes.SequenceEqual(chosenIndexes)))
+                if (i_CurrentBoard.getBoard()[chosenIndexes[0], chosenIndexes[1]].IsVisible)
                 {
                     Console.WriteLine("This is cell is already taken!");
-                        continue;
-                    }
-                 else { 
-                   // m_TakenIndexes.Add(chosenIndexes);
+                    continue;
+                }
+                else
+                {
+                    // m_TakenIndexes.Add(chosenIndexes);
                     isValidMove = true;
                     continue;
                 }
