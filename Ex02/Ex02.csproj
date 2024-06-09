@@ -36,12 +36,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board.cs" />
-    <Compile Include="Computer.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="InputValidator.cs" />
-    <Compile Include="MemoryGame.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="Logic\Board.cs" />
+    <Compile Include="Logic\BoardCell.cs" />
+    <Compile Include="Logic\GameLogicManager.cs" />
+    <Compile Include="UI\Program.cs" />
+    <Compile Include="UI\InputValidator.cs" />
+    <Compile Include="UI\MemoryGameManager.cs" />
+    <Compile Include="Logic\User.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ex02.ConsoleUtils">
+      <HintPath>..\..\..\..\..\..\Temp\Ex02.ConsoleUtils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

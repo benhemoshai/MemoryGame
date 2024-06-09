@@ -25,7 +25,7 @@ namespace Ex02
         {
             get { return m_IsVisible; }
         }
-        public void toggleCellVisibility()
+        public void ToggleCellVisibility()
         {
             m_IsVisible = !m_IsVisible;
         }

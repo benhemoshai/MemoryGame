@@ -10,7 +10,7 @@ namespace Ex02
 {
     class InputValidator
     {
-        public static string getValidUserName()
+        public static string GetValidUserName()
         {
             bool isValidName = false;
             string userName = "";
@@ -32,7 +32,7 @@ namespace Ex02
             return userName;
         }
 
-        public static int getOpponentType()
+        public static int GetOpponentType()
         {
             int choice = -1;
             bool isValidChoice = false;
@@ -42,6 +42,7 @@ namespace Ex02
                 Console.WriteLine("Press 1 and enter for two players game");
                 Console.WriteLine("Press 2 and enter for playing against the computer");
                 isValidChoice = int.TryParse(Console.ReadLine(), out choice);
+
                 if (choice > 2 || choice < 1)
                 {
                     Console.WriteLine("Invalid choice! Please enter 1 or 2.");
@@ -57,14 +58,14 @@ namespace Ex02
             return choice;
         }
 
-         public static int[] getValidBoardSize()
-        {
+       public static int[] GetValidBoardSize()
+       {
             int numOfRows = askForBoardDimensions("rows");
             int numOfColums = askForBoardDimensions("columns");
             int[] boardDimensions = { numOfRows, numOfColums };
 
             return boardDimensions;
-        }
+       }
 
         private static int askForBoardDimensions(string i_DimensionType)
         {
@@ -96,18 +97,19 @@ namespace Ex02
             return userAnswerInt;
         }
 
-        public static int[] getValidMove(string i_UserName, Board i_Board)
+        public static int[] GetValidMove(string i_UserName, Board i_Board)
         {
             int[] chosenIndexes = new int[2];
             bool isValidMove = false;
-            int currentBoardRows = i_Board.getSize()[0];
-            int currentBoardColumns = i_Board.getSize()[1];
+            int currentBoardRows = i_Board.GetSize()[0];
+            int currentBoardColumns = i_Board.GetSize()[1];
             string moveIndexes = "";
 
             while (!isValidMove)
             {
                 Console.WriteLine(string.Format("({0}) Enter a valid move: ", i_UserName)); 
                 moveIndexes = Console.ReadLine();
+
                 if (moveIndexes.Length != 2)
                 {
                     if (moveIndexes.Equals("Q")) //New!
@@ -120,9 +122,8 @@ namespace Ex02
                     Console.WriteLine("A valid move contains only 2 letters!");
                     continue;
                 }
-
                 else if (moveIndexes[0] - 65 < 0 || moveIndexes[0] - 65 > currentBoardColumns - 1)
-                { // decrease by 65 to parse it to int 
+                {
                     Console.WriteLine("Invalid column index!");
                     continue;
                 }
@@ -134,7 +135,8 @@ namespace Ex02
 
                 chosenIndexes[0] = int.Parse(moveIndexes.Substring(1)) - 1; // or moveIndexes[1] - 48 - 1;
                 chosenIndexes[1] = moveIndexes[0] - 65;
-                if (i_Board.getBoardCells()[chosenIndexes[0], chosenIndexes[1]].IsVisible)
+
+                if (i_Board.GetBoardCells()[chosenIndexes[0], chosenIndexes[1]].IsVisible)
                 {
                     Console.WriteLine("This is cell is already taken!");
                     continue;
@@ -148,7 +150,7 @@ namespace Ex02
 
             return chosenIndexes;
         }
-        public static bool isUserWantsAnotherRound()
+        public static bool DoesUserWantAnotherRound()
         {
             bool isValidChoice = false;
             bool isPlayingAnotherGame = false;
@@ -157,6 +159,7 @@ namespace Ex02
             {
                 Console.WriteLine("Do you want to play again? (press Y or N)");
                 string userChoice = Console.ReadLine();
+
                 if (userChoice.Equals("Y"))
                 {
                     isValidChoice = true;
@@ -169,7 +172,7 @@ namespace Ex02
                 }
                 else
                 {
-                    Console.WriteLine("Enter only Y or N to continue!");
+                    Console.WriteLine("Enter only Y or N/Q to continue!");
                     continue;
                 }
             }

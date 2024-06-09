@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
-
-    class Board//<cellType>
+    class Board
     {
         private int m_boardRows = 0;
         private int m_boardColumns = 0;
@@ -22,7 +21,7 @@ namespace Ex02
             m_boardMatrix = new BoardCell[m_boardRows, m_boardColumns];
         }
 
-        public List<char> generateCards() // makes a list of the cards values to put in the board
+        public List<char> GenerateCards() // makes a list of the cards values to put in the board
         {
             char initialSeedCharacter = 'Z';
             int numberOfCellPairs = (m_boardRows * m_boardColumns) / 2;
@@ -38,12 +37,12 @@ namespace Ex02
             return cardsList;
         }
 
-        public void initializeBoard()
+        public void InitializeBoard()
         {
-            List<char> cardsList = generateCards();
-
+            List<char> cardsList = GenerateCards();
             Random rand = new Random();
             int randomIndex = -1;
+
             for (int i = 0; i < this.m_boardRows; i++)
             {
                 for (int j = 0; j < this.m_boardColumns; j++)
@@ -55,21 +54,24 @@ namespace Ex02
             }
         }
 
-        public void toggleCellVisibility(int i_RowIndex, int i_ColIndex)
+        public void ToggleCellVisibility(int i_RowIndex, int i_ColIndex)
         {
             bool currentVisibility = m_boardMatrix[i_RowIndex, i_ColIndex].IsVisible;
-            m_boardMatrix[i_RowIndex, i_ColIndex].toggleCellVisibility();
+            m_boardMatrix[i_RowIndex, i_ColIndex].ToggleCellVisibility();
         }
-        public int[] getSize()
+
+        public int[] GetSize()
         {
             int[] size = { this.m_boardRows, this.m_boardColumns };
+
             return size;
         }
-        public BoardCell[,] getBoardCells()
+        public BoardCell[,] GetBoardCells()
         {
             return this.m_boardMatrix;
         }
-        public bool isBoardFullyVisible() //New - maybe to move to the GameLogic
+
+        public bool IsBoardFullyVisible() //New - maybe to move to the GameLogic
         {
             int flippedCells = 0;
             for (int i = 0; i < this.m_boardRows; i++)
@@ -82,10 +84,11 @@ namespace Ex02
                     }
                 }
             }
+
             return (flippedCells == m_boardColumns * m_boardRows);
         }
 
-        public List<int[]> getFreeIndexes()
+        public List<int[]> GetFreeIndexes()
         {
             List<int[]> freeIndexes = new List<int[]>();
 
@@ -100,8 +103,8 @@ namespace Ex02
                     }
                 }
             }
+
             return freeIndexes;
         }
-
     }
 }

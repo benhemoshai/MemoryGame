@@ -1,10 +1,13 @@
 ﻿using Ex02;
 
-class Program
+namespace Ex02
 {
+    class Program
+    {
         public static void Main()
         {
-            MemoryGameManager.startMemoryGame();
+            MemoryGameManager.StartMemoryGame();
         }
+    }
 }
 
